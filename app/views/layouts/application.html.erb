@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title><%= controller.action_name %></title>
+  <%= javascript_include_tag 'jquery-1.9.1.js' %>
+  <%= stylesheet_link_tag 'bootstrap' %>
+  <%= stylesheet_link_tag 'bootstrap-min' %>
+  <%= stylesheet_link_tag 'bootstrap-responsive-min' %>
+  <%= stylesheet_link_tag 'bootstrap-responsive' %>
+  <%= stylesheet_link_tag 'mystyle' %>
+  <%= javascript_include_tag 'bootstrap.js'%>
+  <%= javascript_include_tag 'bootstrap_min.js'%>
+  <%= javascript_include_tag 'bootstrap_carousel.js'%>
+  <%= javascript_include_tag 'bootstrap_dropdown.js'%>
+</head>
+<body>
+	<div id="head">
+		<%= link_to(image_tag("logo.png", :alt => "airbnb", :id =>"img_1"), home_path) %>
+		<% form_tag find_path do %>
+		<div class="input-prepend input-append" id="place">
+			<span class="add-on">
+				<i class="icon-search"></i>
+			</span>
+			<%= text_field_tag :country, nil, :placeholder => "Which country you wanna go ?"%>
+			<%= submit_tag 'Search', :class =>"btn"%>
+		</div>
+		<%end%>
+		<% if !current_user %>
+			<%= link_to 'Sign Up', signup_path, :class => "btn btn-link", :id =>"signup"%>
+			<%= link_to 'Log In', login_path, :class => "btn btn-link", :id =>"login"%>
+		<% else %>
+			<div class="dropdown" id="login_name">
+  				<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+   					<font color="white"><%=current_user.name%></font>
+    			<span class="caret"></span>
+  				</a>
+  				<ul class="dropdown-menu">
+  					<li><%= link_to "My Space",my_space_path%></li>
+  					<li><%= link_to "My Plans",my_plan_path%></li>
+   					<li><%= link_to "Logout", logout_path, :method => :delete, :confirm => "Are you sure you want to logout?" %></li>
+  				</ul>
+			</div>
+		<% end %>		
+		<%= link_to 'List Your Space', list_myspace_path, :class => "btn btn-danger", :id =>"listyourspace" %>
+	</div>
+	<% flash.each do |key, value| %>
+		<div class="flash alert-<%= key %>">
+			<%= value %>
+		</div>
+	<% end %>
+<%= yield %>
+<%= render 'layouts/footer' %>
+</body>
+</html>

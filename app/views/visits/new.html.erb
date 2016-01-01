@@ -1,0 +1,123 @@
+<div id="container">
+	<% form_for(@visit) do |f| %>
+		<%= f.label 'Datein', "Check-in"%>
+		<%= f.text_field('datein', :onchange=>"update_date(),validate()").gsub("type=\"text\"", "type=\"date\"")%>
+		<%= f.label 'Dateout', "Check-out"%>
+		<%= f.text_field('dateout', :onchange => "cal_cost(),check_date_out(),validate()").gsub("type=\"text\"", "type=\"date\"")%>
+		<%= f.label 'Guests'%>
+		<%= f.select('guests','<option>Select check-in date first</option>',{}, :onchange =>"validate()")%>
+		<div id="rooms" style="display:none">
+				
+		</div><br>
+		<div id="cost" style="display:none">
+				
+		</div><br>
+		<%= f.hidden_field 'list_id', :value=>@list.id%>
+		<%= f.hidden_field 'guest_id', :value=>current_user.id%><br>
+		<%= f.hidden_field 'place'  , :value=>@list.title%>
+		<%= f.submit 'Done', :class => "btn btn-primary", :style=>"display:none"%>
+	<% end %>
+</div>
+<script type="text/javascript">
+	window.onload=function()
+	{
+		var datein=document.getElementById("visit_datein");
+		var dateout=document.getElementById("visit_dateout");
+		datein.min="<%= Date.today %>";
+		var str="<%=@date_in%>".split("-");
+		str[2]=String(parseInt(str[2])+1);
+		var date_out=str[0]+"-"+str[1]+"-"+str[2];
+		dateout.min=date_out;
+	}
+	function cal_cost()
+	{
+		var datein=document.getElementById("visit_datein").value;
+		var dateout=document.getElementById("visit_dateout").value;
+		var d1= new Date(datein);
+		var d2=new Date(dateout);
+		var total;
+		if(d2.getDate()>d1.getDate())
+			total=d2.getDate()-d1.getDate();
+		if(d2.getDate()<d1.getDate())
+			total=(30+d2.getDate()-d1.getDate());
+		var cost=<%=@list.cost%>;
+		cost*=total;
+		var display_cost=document.getElementById("cost");
+		var str="Your total cost is ₹"+cost;
+		display_cost.innerHTML=str;
+		display_cost.style.display="inline";
+	}
+	function update_date()
+	{	
+		var list_id= document.getElementById("visit_list_id").value;
+		var datein=document.getElementById("visit_datein").value;
+		var display_rooms=document.getElementById("rooms");
+		var rooms,temp;
+		update_dateout(datein);
+		$.post("/visits/get_max_guests",{selected_value : datein, id : list_id}, function(data, textStatus, jqXHR){
+			rooms=parseInt(data);
+			<% if @list.room_type =="Private Room"%>
+				temp= <%= @list.accomodates%>;
+				display_rooms.innerHTML=temp+" rooms available";
+				display_rooms.style.display="inline";
+				display_rooms.style.color="green";
+			<% else %>
+				temp=(<%=@list.accomodates%>-rooms);
+				if(temp==0)
+				{
+					display_rooms.innerHTML="Sorry no rooms available!!!"
+					display_rooms.style.display="inline";
+					display_rooms.style.color="red";
+				}
+				if(temp>0)
+				{
+					display_rooms.innerHTML=temp+" rooms available";
+					display_rooms.style.display="inline";
+					display_rooms.style.color="green";
+				}
+			<%end%>		
+			var sel=document.getElementById("visit_guests");
+			sel.length=0;
+			sel[0]= new Option("Select guests",'');
+			for(var i=1;i<=temp;i++)
+			{
+				sel[i]=new Option(i,i);
+			}
+		});
+	}
+	function update_dateout(datein)
+	{
+		var list_id= document.getElementById("visit_list_id").value;
+		var location="<%= @list.title%>";
+		document.getElementById("visit_dateout").min=datein;
+		document.getElementById("visit_dateout").max="";
+		$.post("/visits/get_dateout",{date_in : datein, id : list_id, place : location},function(data, textStatus, jqXHR){
+			if(data!="" && data!=null)
+			{	
+				var dateout=document.getElementById("visit_dateout");
+				dateout.max=data;
+			}
+		});
+	}
+	function check_date_out()
+	{
+		var datein=document.getElementById("visit_datein").value;
+		var dateout=document.getElementById("visit_dateout").value;
+		if(datein>=dateout)
+		{
+			alert("You must stay for atleast 1 night");
+			document.getElementById("visit_dateout").focus();
+		}
+	}
+	function validate()
+	{
+		var datein=document.getElementById("visit_datein").value;
+		var dateout=document.getElementById("visit_dateout").value;
+		var sel=document.getElementById("visit_guests").selectedIndex;
+		if((datein!="") && (dateout!="") && (sel>0) && (datein<dateout))
+			document.getElementById("visit_submit").style.display="inline";
+		else
+			document.getElementById("visit_submit").style.display="none";
+	}
+
+</script>

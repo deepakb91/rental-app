@@ -1,0 +1,17 @@
+<div id="container" class="content_display">
+	<p><b><%= @list.title%> is located at :</b></p>
+	<div>
+		<p><%= @list.address1%>, <%= @list.address2 %><br>
+		<%= @list.city%>, <%= @list.state%><br>
+		<%= @list.country%></p>
+	</div>
+	<p><b>Bedrooms :</b> <%=@list.bedrooms%></p>
+	<p><b>Accomodates :</b> <%=@list.accomodates%> people.</p>
+	<p>Cost for 1 day is <b>₹<%= @list.cost%></b><br></p>
+	<p><b>Description :</b> <%=@list.description%><br></p>
+	<p><b>Contact     :</b></p>
+	<div>
+		<p> <%=@list.mail%><br>
+		Ph: <%=@list.phone%></p>
+	</div>	
+</div>

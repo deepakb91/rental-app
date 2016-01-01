@@ -1,0 +1,24 @@
+<div id="table_container">
+	<table class="table table-striped" id="mytable">
+		<tr>
+			<th>TITLE</th>
+			<th>ROOM-TYPE</th>
+			<th>CITY</th>
+			<th>STATE</th>
+			<th>COUNTRY</th>
+			<th colspan="1"></th>
+		</tr>
+		<% @lists.each do |list|%>
+			<%if list.user_id!=current_user.id%>
+				<tr>
+					<td><%= list.title%></td>
+					<td><%= list.room_type%></td>
+					<td><%= list.city%></td>
+					<td><%= list.state%></td>
+					<td><%= list.country%></td>
+					<td><%= link_to 'View', property_path(:id=>list.id), :class =>"btn btn-primary"%></td>
+				</tr>
+			<%end%>
+		<%end%>
+	</table>
+</div>

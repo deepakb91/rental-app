@@ -1,0 +1,50 @@
+<div id="container">
+		<% form_for(@list) do |f| %>
+			<%= f.hidden_field 'user_id', :value => current_user.id %>
+			<%= f.label :Accomodates %>
+			<%= f.select("accomodates", "<option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>") %>
+			<%= f.label :Room, "Room Type" %>
+			<%= f.select("room_type", "<option>Private Room</option><option>Shared Room</option>")%>
+			<%= f.label :Bedrooms %>
+			<%= f.select("bedrooms", "<option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>") %>
+			<%= f.label :Title %>
+			<%= f.text_field 'title', :required=>"required"%>
+			<%= f.label :Description %>
+			<%= f.text_area 'description', :cols=>"30", :rows=>"10" ,:required=>"required"%>
+			<%= f.label :Cost %>
+			<div class="input-prepend">
+				<span class="add-on">
+					<b>Rs</b>
+				</span>
+				<%= f.text_field :cost, :maxlength => 5, :style =>"width:50px", :required=>"required"%>
+			</div>
+			<%= f.label :Email %>
+			<%= f.text_field :mail, :required=>"required", :onblur=>"validate()"%>
+			<%= f.label :Phone%>
+			<%= f.text_field 'phone', :required=>"required"%>
+			<%= f.label :Address1, "Address Line 1" %>
+			<%= f.text_field 'address1', :required=>"required"%>
+			<%= f.label :Address2, "Address Line 2"%>
+			<%= f.text_field 'address2', :required=>"required"%>
+			<%= f.label :City %>
+			<%= f.text_field 'city', :required=>"required"%>
+			<%= f.label :State %>
+			<%= f.text_field 'state', :required=>"required"%>
+			<%= f.label :Country %>
+			<%= f.text_field 'country', :required=>"required"%><br/>
+			<%= f.submit 'Save & Continue', :class => "btn btn-primary"%>
+		<%end%>
+</div>
+<script type="text/javascript">
+	function validate()
+	{
+		var ck_email=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+		var email=document.getElementById("list_mail").value;
+		if(!ck_email.test(email))
+		{
+			alert("E-mail id is invalid. Retype correct e-mail id...");
+			document.getElementById("list_mail").focus();
+		}
+		
+	}
+</script>

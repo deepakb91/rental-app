@@ -1,0 +1,21 @@
+<div id="table_container">
+	<table class="table table-striped" id="mytable">
+		<tr>
+			<th>TITLE</th>
+			<th>CHECK-IN</th>
+			<th>CHECK-OUT</th>
+			<th>ACCOMPANIES</th>
+			<th colspan="2"></th>
+		</tr>
+		<% @visits.each do |visit|%>
+			<tr>
+				<td><%= visit.place%></td>
+				<td><%= visit.datein%></td>
+				<td><%= visit.dateout%></td>
+				<td><%= visit.guests%></td>
+				<td><%= link_to 'View plan',view_myplan_path(:id=>visit.list_id), :class=>"btn btn-success"%></td>
+				<td><%= link_to 'Cancel plan',visit, :class =>"btn btn-danger", :confirm => 'Are you sure?', :method => :delete%></td>
+			</tr>
+		<%end%>
+	</table>
+</div>

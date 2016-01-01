@@ -1,0 +1,21 @@
+<div id="container">
+	<% form_for @user_session, :url => user_sessions_path do |f| %> 
+		<%= f.label :email %>
+		<div class="input-prepend">
+			<span class="add-on">
+				<i class="icon-user"></i>
+			</span>
+			<%= f.text_field :email %>
+		 </div>
+		<%= f.label :password %>
+		<div class="input-prepend">
+			<span class="add-on">
+				<i class="icon-lock"></i>
+			</span>
+			<%= f.password_field :password %>
+		</div>
+		<div>
+			<%= f.submit "Sign in", :class => "btn btn-primary"%>
+		</div>
+	<% end %>
+</div>
