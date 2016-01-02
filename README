@@ -14,5 +14,5 @@ Steps to Run
 1. Download rental-app.zip to your machine and unzip it.
 2. Use sql-dump.sql file to export data to your mysql.
 3. Using a command prompt or terminal go to the rental-app directory.
-4. execute ./script/server start to start the rails server.
+4. Execute "./script/server start" command to start the rails server.
 5. Run the application by using localhost:3000/rental-app on your web browser.
