@@ -40,6 +40,7 @@ class ApplicationController < ActionController::Base
     end
     
     def store_location
+      #store the url in the session
       session[:return_to] = request.request_uri
     end
     

@@ -1,3 +1,4 @@
+# This controller manages are user based actions
 class ListsController < ApplicationController
 	before_filter :load_list, :only=>[:edit, :update, :destroy, :view]
 	before_filter :require_user, :only=>[:new]
